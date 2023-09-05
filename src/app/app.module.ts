@@ -8,7 +8,9 @@ import { CreateinvoiceComponent } from './components/createinvoice/createinvoice
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 
@@ -24,7 +26,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgbModule,
+    NgxExtendedPdfViewerModule
+    
     
   ],
   providers: [],

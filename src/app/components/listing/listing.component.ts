@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { MasterService } from 'src/app/services/master.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -11,8 +12,11 @@ import { MasterService } from 'src/app/services/master.service';
   styleUrls: ['./listing.component.scss']
 })
 export class ListingComponent implements OnInit {
-  constructor(private service:MasterService,private alert:ToastrService, private route:Router,
+  constructor(private service:MasterService, private route:Router, private alert:ToastrService,
     private modalservice: NgbModal){}
+
+    @ViewChild('content') popupview !: ElementRef;
+    
   ngOnInit(): void {
     this.LoadInvoice();
   }
@@ -20,7 +24,7 @@ export class ListingComponent implements OnInit {
   InvoiceHeader:any;
   dtTrigger:Subject<any>=new Subject<any>();
   invoiceNo: any;
-  pdfurl = '';
+  pdfUrl = '';
 
   LoadInvoice(){
     this.service.GetAllInvoice().subscribe(res=>{
@@ -48,18 +52,34 @@ export class ListingComponent implements OnInit {
      this.route.navigateByUrl('/editinvoice/',invoiceNo);
   }
 
+  PrintInvoice(invoiceNo:any){
+     this.service.GenerateInvoicePDF(invoiceNo).subscribe(res=>{
+      let blob: Blob = res.body as Blob;
+      let url = window.URL.createObjectURL(blob);
+      window.open(url);
+     });
+  }
+
   PreviewInvoice(invoiceNo:any){
     this.invoiceNo = invoiceNo;
     this.service.GenerateInvoicePDF(invoiceNo).subscribe(res =>{
       let blob:Blob = res.body as Blob;
       let url = window.URL.createObjectURL(blob);
-      this.pdfurl = url;
-      this.modal
+      this.pdfUrl = url;
+      this.modalservice.open(this.popupview, { size: 'lg' });
 
     })
   }
 
   DownloadInvoice(invoiceNo:any){
+    this.service.GenerateInvoicePDF(invoiceNo).subscribe(res =>{
+     let blob: Blob = res.body as Blob;
+     let url = window.URL.createObjectURL(blob);
 
+     let a = document.createElement('a');
+     a.download = invoiceNo;
+     a.href = url;
+     a.click();
+    });
   }
 }

@@ -24,9 +24,9 @@
                 <td>{{item.total | currency}}</td>
                 <td>{{item.tax | currency}}</td>
                 <td>{{item.netTotal | currency}}</td>
-                <td style="width: 30%">
-            <a class="btn btn-danger" (click)="EditInvoice(item.invoiceNo)">Edit</a> | 
-            <a class="btn btn-danger" (click)="InvoiceRemove(item.invoiceNo)">Delete</a>
+                <td style="width: 80%">
+            <a class="btn btn-primary" (click)="EditInvoice(item.invoiceNo)">Edit</a> | 
+            <a class="btn btn-danger" (click)="InvoiceRemove(item.invoiceNo)">Delete</a> | 
             <a class="btn btn-success" (click)="PreviewInvoice(item.invoiceNo)">Print</a> |
             <a class="btn btn-success" (click)="DownloadInvoice(item.invoiceNo)">Download</a>
                 </td>
@@ -36,3 +36,18 @@
       </table>
     </div>
 </div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Preview Invoice : <b>{{invoiceNo}}</b></h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<ngx-extended-pdf-viewer [src]="pdfUrl"></ngx-extended-pdf-viewer>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Close</button>
+	</div>
+</ng-template>
+
+

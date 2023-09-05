@@ -48,6 +48,6 @@ export class MasterService {
   }
 
   GenerateInvoicePDF(invoiceNo:any){
-    return this.http.get(this.apiUrl + "Invoice" + "generatepdf?InvoiceNo=" + invoiceNo, {observe:'response',responseType:'blob'});
+    return this.http.get(this.apiUrl + "Invoice" + "/generatepdf?InvoiceNo=" + invoiceNo, {observe:'response',responseType:'blob'});
   }
 }
